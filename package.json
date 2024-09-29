@@ -12,6 +12,11 @@
     "@kinde-oss/kinde-auth-nextjs": "^2.3.8",
     "@radix-ui/react-slot": "^1.1.0",
     "@tailwindcss/typography": "^0.5.15",
+    "@tanstack/react-query": "^5.56.2",
+    "@trpc/client": "11.0.0-rc.552",
+    "@trpc/next": "11.0.0-rc.552",
+    "@trpc/react-query": "11.0.0-rc.552",
+    "@trpc/server": "11.0.0-rc.552",
     "@types/node": "22.5.5",
     "@types/react": "18.3.5",
     "@types/react-dom": "18.3.0",
@@ -42,6 +47,6 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.6.2",
     "uploadthing": "^5.6.1",
-    "zod": "^3.21.4"
+    "zod": "^3.23.8"
   }
 }
