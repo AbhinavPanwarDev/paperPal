@@ -1,6 +1,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { publicProcedure, router } from "./trpc";
 import { TRPCError } from "@trpc/server";
+import { db } from "@/db";
 export const appRouter = router({
   // test: publicProcedure.query(() => {
   //   return "Hiii";
@@ -8,13 +9,29 @@ export const appRouter = router({
 
   authCallback: publicProcedure.query(async () => {
     const { getUser } = getKindeServerSession();
-    const user = getUser();
+    const user = await getUser();
 
-    if (!(await user).id || !(await user).email)
-      throw new TRPCError({ code: "UNAUTHORIZED" });
+    //Guard Clause
+    if (!user.id || !user.email) throw new TRPCError({ code: "UNAUTHORIZED" });
 
-     //query to check if the user is in the db or not
-     
+    //query to check if the user is in the db or not
+
+    const dbUser = await db.user.findFirst({
+      where: {
+        id: user.id,
+      },
+    });
+
+    if (!dbUser) {
+      // if no user in db, then we need to create one
+      await db.user.create({
+        data: {
+          id: user.id,
+          email: user.email,
+        },
+      });
+    }
+
     return {success: true}
   }),
 });
