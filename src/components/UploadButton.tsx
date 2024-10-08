@@ -21,7 +21,7 @@ const UploadButton = () => {
         </DialogTrigger>
 
         <DialogContent>
-            eg
+            Select the files to upload for chatting...
         </DialogContent>
 
         

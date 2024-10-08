@@ -6,14 +6,13 @@ import { initTRPC, TRPCError } from "@trpc/server";
  */
 const t = initTRPC.create();
 
-// creating isAuth middleware which acts as a privateProcedure  
+// creating isAuth middleware which acts as a privateProcedure
 const middleware = t.middleware;
 const isAuth = middleware(async (opts) => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
   //guard clause
-
   if (!user || !user.id) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
@@ -30,4 +29,4 @@ const isAuth = middleware(async (opts) => {
  */
 export const router = t.router;
 export const publicProcedure = t.procedure; // publicProcedure lets you create a public API endpoint
-export const privateProcedure = t.procedure.use(isAuth )
+export const privateProcedure = t.procedure.use(isAuth);
