@@ -8,24 +8,22 @@ import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
-const Dashboard = () => {
 
-  const utils = trpc.useContext()
+const Dashboard = () => {
+  const utils = trpc.useContext();
 
   const { data: files, isLoading } = trpc.getUserFiles.useQuery();
 
   const { mutate: deleteFile } = trpc.deleteFile.useMutation({
-    
     onSuccess: () => {
-      // onSuccess is executed when the route has been successfull and the 
+      // onSuccess is executed when the route has been successfull and the
       // file has been deleted, the following code to be executed to ensure
       // delete file from frontend without reloading
-    
-      utils.getUserFiles.invalidate()
-      
+
+      utils.getUserFiles.invalidate();
+
       //it invalidates the getUserfiles call to delete the file without relaoding the page
       //because if we dont invalidate it, the file will not be removed from the screen
-    
     },
   });
 
