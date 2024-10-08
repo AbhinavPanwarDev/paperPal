@@ -9,7 +9,25 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 
 const Dashboard = () => {
+
+  const utils = trpc.useContext()
+
   const { data: files, isLoading } = trpc.getUserFiles.useQuery();
+
+  const { mutate: deleteFile } = trpc.deleteFile.useMutation({
+    
+    onSuccess: () => {
+      // onSuccess is executed when the route has been successfull and the 
+      // file has been deleted, the following code to be executed to ensure
+      // delete file from frontend without reloading
+    
+      utils.getUserFiles.invalidate()
+      
+      //it invalidates the getUserfiles call to delete the file without relaoding the page
+      //because if we dont invalidate it, the file will not be removed from the screen
+    
+    },
+  });
 
   return (
     <main className="mx-auto max-w-7xl md:p-10">
@@ -51,23 +69,24 @@ const Dashboard = () => {
                 <div className="px-6 mt-4 grid grid-cols-3 place-items-center py-2 gap-6 text-xs">
                   <div className="flex items-center gap-2">
                     <Plus className="h-4 w-4" />
-                    {format(new Date(file.createdAt), "MMM yyyy")}
+                    {format(new Date(file.createdAt), "MMMM yyyy")}
                   </div>
 
                   <div className="flex items-center gap-2">
-                  <MessageSquare className="h-4 w-4" />
-                  New Msg...
+                    <MessageSquare className="h-4 w-4" />
+                    New Msg...
+                  </div>
+
+                  <div>
+                    <Button
+                      onClick={() => deleteFile({ id: file.id })}
+                      size="sm"
+                      variant="destructive"
+                    >
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-
-                <div>
-                  <Button size='sm' variant='destructive'>
-                    <Trash className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                </div>
-
-
               </li>
             ))}
         </ul>
