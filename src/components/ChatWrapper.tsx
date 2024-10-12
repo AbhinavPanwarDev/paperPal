@@ -3,7 +3,7 @@
 const ChatWrapper = () => {
   return (
     <div>
-      chatwrapper
+      chatWrapper
     </div>
   )
 }
