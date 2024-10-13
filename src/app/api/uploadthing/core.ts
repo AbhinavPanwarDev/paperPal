@@ -3,28 +3,6 @@ import { db } from "@/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 
-//asd
-// import { UTApi } from "uploadthing/server";
-// import { NextRequest, NextResponse } from "next/server";
-
-// const utapi = new UTApi();
-
-// export async function GET(request: NextRequest) {
-//   const fileKey = request.nextUrl.searchParams.get("fileKey");
-
-//   if (!fileKey) {
-//     return NextResponse.json({ error: "File key is required" }, { status: 400 });
-//   }
-
-//   try {
-//     const signedUrl = await utapi.getSignedURL(fileKey);
-//     return NextResponse.json({ url: signedUrl });
-//   } catch (error) {
-//     console.error("Error generating signed URL:", error);
-//     return NextResponse.json({ error: "Failed to generate signed URL" }, { status: 500 });
-//   }
-// }
-//asd
 
 const f = createUploadthing();
 
@@ -57,7 +35,7 @@ export const ourFileRouter = {
           key: file.key,
           name: file.name,
           userId: metadata.userId,
-          url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+          url: `https://utfs.io/f/${file.key}`, //updated way to construct url acc to docs
           uploadStatus: "PROCESSING",
         },
       });
