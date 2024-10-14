@@ -13,7 +13,8 @@ import { Input } from "./ui/input";
 import { useState } from "react";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-import {useForm} from 'react-hook-form'
+import { useForm } from "react-hook-form";
+import PdfFullscreen from "./PdfFullscreen";
 
 interface PdfRendererProps {
   url: string;
@@ -24,27 +25,19 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
   // const { toast } = useToast();
   const [numPages, setNumPages] = useState<number>();
   const [currPage, setCurrPage] = useState<number>(1);
-  const {} = useForm({})
+  const {} = useForm({});
 
   return (
     <div className="w-full bg-white rounded-md shadow flex flex-col items-center">
       <div className="h-14 w-full border-b border-zinc-300 flex items-center justify-between px-2">
         <div className="flex items-center gap-1.5">
-          
-          {/* <div className="flex items-center gap-1.5">
-            <Input className="w-12 h-8" />
-            <p className="text-zinc-700 text-sm space-x-1">
-              <span>/</span>
-              <span>{numPages}</span>
-            </p>
-          </div> */}
-
           <Button
             disabled={numPages === undefined || currPage == numPages}
             onClick={() => {
               setCurrPage((prev) =>
                 prev + 1 > numPages! ? numPages! : prev + 1
               );
+              
             }}
             variant="ghost"
             aria-label="next page"
@@ -63,10 +56,12 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             <ChevronDown />
           </Button>
 
+          <PdfFullscreen fileUrl={url} />
         </div>
       </div>
 
       <div className="flex-1 w-full max-h-screen">
+        
         <div ref={ref}>
           <Document
             onLoadSuccess={({ numPages }) => setNumPages(numPages)}
