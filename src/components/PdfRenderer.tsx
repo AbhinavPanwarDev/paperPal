@@ -56,7 +56,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             <ChevronDown />
           </Button>
 
-          <PdfFullscreen fileUrl={url} />
+          {/* <PdfFullscreen fileUrl={url} /> */}
         </div>
       </div>
 
