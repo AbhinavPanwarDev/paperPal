@@ -17,7 +17,7 @@ const ChatWrapper = ({ fileId }: ChatWrapperProps) => {
     },
     {
       refetchInterval: (data) =>
-        data?.status === "SUCCESS" || data?.status === "FAILED" ? false : 500,
+        data?.status === "SUCCESS" || data?.status === "FAILED" ? false : 2000,
     }
   );
 
@@ -60,7 +60,7 @@ const ChatWrapper = ({ fileId }: ChatWrapperProps) => {
         <div className="flex-1 flex justify-center items-center flex-col mb-28">
           <div className="flex flex-col items-center gap-2">
             <XCircle className="h-8 w-8 text-red-500" />
-            <h3 className="font-semibold text-xl">Too many pages in PDF</h3>
+            <h3 className="font-semibold text-xl">Failed State</h3>
             <Link
               href="/dashboard"
               className={buttonVariants({
