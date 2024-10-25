@@ -1,11 +1,9 @@
 import { db } from "@/db";
-
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { Pinecone } from '@pinecone-database/pinecone';
+import { Pinecone } from "@pinecone-database/pinecone";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 
-import { getPineconeClient } from "@/lib/pinecone";
 import { PineconeStore } from "@langchain/pinecone";
 import { OpenAIEmbeddings } from "@langchain/openai";
 
@@ -32,16 +30,14 @@ export const ourFileRouter = {
           key: file.key,
           name: file.name,
           userId: metadata.userId,
-          url: `https://utfs.io/f/${file.key}`, //updated way to construct url acc to docs
+          url: `https://utfs.io/f/${file.key}`,
           uploadStatus: "PROCESSING",
         },
       });
 
       try {
         const response = await fetch(`https://utfs.io/f/${file.key}`);
-        // if (!response.ok) {
-        //   throw new Error(`Failed to fetch file: ${response.statusText}`);
-        // }
+
         console.log("GOT FILE");
         const blob = await response.blob();
 
@@ -49,7 +45,6 @@ export const ourFileRouter = {
 
         const pageLevelDocs = await loader.load();
 
-        // const pagesAmt = pageLevelDocs.length
         console.log("CREATING PINECONE");
         const pinecone = new Pinecone({
           apiKey: process.env.PINECONE_API_KEY!,
