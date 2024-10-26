@@ -38,30 +38,25 @@ export const ourFileRouter = {
       try {
         const response = await fetch(`https://utfs.io/f/${file.key}`);
 
-        console.log("GOT FILE");
         const blob = await response.blob();
 
         const loader = new PDFLoader(blob);
 
         const pageLevelDocs = await loader.load();
 
-        console.log("CREATING PINECONE");
         const pinecone = new Pinecone({
           apiKey: process.env.PINECONE_API_KEY!,
         });
         const pineconeIndex = pinecone.Index("paperpall");
 
-        console.log("Creating OPENAI EMBEDDINGS");
         const embeddings = new OpenAIEmbeddings({
           openAIApiKey: process.env.OPENAI_API_KEY,
         });
 
-        console.log("Storing documents in PINECONE");
         await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
           pineconeIndex,
           namespace: createdFile.id,
         });
-        console.log("DOCUMENTS STORED IN PINECONE");
 
         await db.file.update({
           data: {
@@ -72,7 +67,6 @@ export const ourFileRouter = {
           },
         });
       } catch (err) {
-        console.error("Error in file processing:", err);
         await db.file.update({
           data: {
             uploadStatus: "FAILED",
