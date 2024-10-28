@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { trpc } from "@/app/_trpc/client";
+import { INFINITE_QUERY_LIMIT } from "@/config/infinite-query";
 
 type StreamResponse = {
   addMessage: () => void;
@@ -26,6 +27,9 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const utils = trpc.useContext();
+  const backupMessage = useRef('')
+
   const { mutate: sendMessage } = useMutation({
     mutationFn: async ({ message }: { message: string }) => {
       const response = await fetch("/api/message", {
@@ -39,16 +43,86 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
       if (!response.ok) {
         throw new Error("Failed to send message");
       }
+      return response.body
     },
+
+    // This onMutate triggers the optimistic updates which puts chat message in the box intantly after it is typed...
+
+    onMutate: async ({ message }) => {
+      backupMessage.current = message
+      setMessage('')
+
+      // step 1
+      await utils.getFileMessages.cancel()
+
+      // step 2
+      const previousMessages =
+        utils.getFileMessages.getInfiniteData()
+
+      // step 3
+      utils.getFileMessages.setInfiniteData(
+        { fileId, limit: INFINITE_QUERY_LIMIT },
+        (old) => {
+          if (!old) {
+            return {
+              pages: [],
+              pageParams: [],
+            }
+          }
+
+          let newPages = [...old.pages]
+
+          let latestPage = newPages[0]!
+
+          latestPage.messages = [
+            {
+              createdAt: new Date().toISOString(),
+              id: crypto.randomUUID(),
+              text: message,
+              isUserMessage: true,
+            },
+            ...latestPage.messages,
+          ]
+
+          newPages[0] = latestPage
+
+          return {
+            ...old,
+            pages: newPages,
+          }
+        }
+      )
+
+      setIsLoading(true)
+
+      return {
+        previousMessages:
+          previousMessages?.pages.flatMap(
+            (page) => page.messages
+          ) ?? [],
+      }
+    },
+
+    onError: (_, __, context) => {
+      setMessage(backupMessage.current)
+      utils.getFileMessages.setData(
+        { fileId },
+        { messages: context?.previousMessages ?? [] }
+      )
+    },
+    onSettled: async () => {
+      setIsLoading(false)
+
+      await utils.getFileMessages.invalidate({ fileId })
+    },
+
   });
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setMessage(e.target.value)
-  }
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
 
-  const addMessage = () => sendMessage({ message })
+  const addMessage = () => sendMessage({ message });
 
   return (
     <ChatContext.Provider
@@ -57,9 +131,9 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
         message,
         handleInputChange,
         isLoading,
-      }}>
+      }}
+    >
       {children}
     </ChatContext.Provider>
-  )
-
+  );
 };
