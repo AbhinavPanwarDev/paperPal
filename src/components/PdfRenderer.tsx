@@ -29,7 +29,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
 
   return (
     <div className="w-full bg-white rounded-md shadow flex flex-col items-center">
-      <div className="h-14 w-full border-b border-zinc-300 flex items-center justify-between px-2">
+      <div className="h-12 w-full border-b border-zinc-300 flex items-center justify-between px-2">
         <div className="flex items-center gap-1.5">
           <Button
             disabled={numPages === undefined || currPage == numPages}
@@ -60,13 +60,13 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
         </div>
       </div>
 
-      <div className="flex-1 w-full max-h-screen">
+      <div className="flex-1 w-full max-h-16">
         
         <div ref={ref}>
           <Document
             onLoadSuccess={({ numPages }) => setNumPages(numPages)}
             file={url}
-            className="max-h-full"
+            className="max-h-screen"
           >
             <Page width={width ? width : 1} pageNumber={currPage} />
           </Document>
