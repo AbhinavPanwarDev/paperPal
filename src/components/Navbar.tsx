@@ -1,14 +1,20 @@
 import Link from "next/link";
 import MaxWidthWraper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
-import { LoginLink, RegisterLink, getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import {
+  LoginLink,
+  RegisterLink,
+  getKindeServerSession,
+} from "@kinde-oss/kinde-auth-nextjs/server";
 import { ArrowRight } from "lucide-react";
 import MobileNav from "./MobileNav";
 
+
 const Navbar = () => {
 
-  const { getUser } = getKindeServerSession()
-  const user = getUser()
+  const { getUser } = getKindeServerSession();
+  const user = getUser();
+
 
   return (
     <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/80 transition-all backdrop-blur-lg">
@@ -22,15 +28,75 @@ const Navbar = () => {
 
           <div className="hidden items-center space-x-4 sm:flex">
             <>
+
+
+
+
+              {/* {!isAuthenticated ? (
+                <>
+                  <LoginLink
+                    //href="/login"
+                    className={buttonVariants({
+                      variant: "ghost",
+                      size: "sm",
+                    })}
+                  >
+                    Sign In
+                  </LoginLink>
+
+                  <RegisterLink
+                    //href="/login"
+                    className={buttonVariants({
+                      size: "sm",
+                    })}
+                  >
+                    Get Started <ArrowRight className="ml-1.5 h-5 w-5" />
+                  </RegisterLink>
+                </>
+              ) : (
+                <>
+                  
+                    <Link
+                      
+                      className={buttonVariants({
+                        variant: "ghost",
+                        size: "sm",
+                      })}
+                      href="/dashboard"
+                    >
+                      Dashboard
+                    </Link>
+                  
+                 
+                  
+                    <Link
+                       className={buttonVariants({
+                        variant: "ghost",
+                        size: "sm",
+                      })}
+                      href="/sign-out"
+                    >
+                      Sign out
+                    </Link>
+                  
+                </>
+              )} 
+              */}
+
+
+
+
               <Link
-                href="/pricing"
+                
                 className={buttonVariants({
                   variant: "ghost",
                   size: "sm",
                 })}
+                href="/dashboard"
               >
-                Pricing
+                Dashboard
               </Link>
+                  
 
               <LoginLink
                 //href="/login"
@@ -45,12 +111,13 @@ const Navbar = () => {
               <RegisterLink
                 //href="/login"
                 className={buttonVariants({
-                  
                   size: "sm",
                 })}
               >
                 Get Started <ArrowRight className="ml-1.5 h-5 w-5" />
               </RegisterLink>
+
+              
             </>
           </div>
         </div>
