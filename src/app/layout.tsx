@@ -8,8 +8,12 @@ import "simplebar-react/dist/simplebar.min.css";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import { Toaster } from "@/components/ui/toaster";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// const { getUser } = getKindeServerSession();
+// const user = getUser();
 
 export const metadata: Metadata = {
   title: "Create Next App",
