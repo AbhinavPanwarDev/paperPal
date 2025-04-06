@@ -8,6 +8,12 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import { NextRequest } from "next/server";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
+// Define a type for the formatted messages
+type FormattedMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
+
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
 
@@ -64,7 +70,6 @@ export const POST = async (req: NextRequest) => {
     take: 10,
   });
 
-  //@ts-ignore
   const formattedPrevMessages = prevMessages.map((msg) => ({
     role: msg.isUserMessage ? ("user" as const) : ("assistant" as const),
     content: msg.text,
@@ -87,7 +92,7 @@ export const POST = async (req: NextRequest) => {
   \n----------------\n
   
   PREVIOUS CONVERSATION:
-  ${formattedPrevMessages.map((message) => {
+  ${formattedPrevMessages.map((message: FormattedMessage) => {
     if (message.role === "user") return `User: ${message.content}\n`;
     return `Assistant: ${message.content}\n`;
   })}
@@ -116,5 +121,4 @@ export const POST = async (req: NextRequest) => {
   })
 
   return new StreamingTextResponse(stream)
-
 };
