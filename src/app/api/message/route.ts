@@ -116,9 +116,9 @@ export const POST = async (req: NextRequest) => {
           fileId,
           userId,
         },
-      })
+      });
     },
-  })
+  });
 
-  return new StreamingTextResponse(stream)
+  return new StreamingTextResponse(stream);
 };
