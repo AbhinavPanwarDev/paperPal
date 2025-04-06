@@ -8,12 +8,6 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import { NextRequest } from "next/server";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
-// Define a type for the formatted messages
-type FormattedMessage = {
-  role: "user" | "assistant";
-  content: string;
-};
-
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
 
@@ -70,6 +64,7 @@ export const POST = async (req: NextRequest) => {
     take: 10,
   });
 
+  // @ts-ignore
   const formattedPrevMessages = prevMessages.map((msg) => ({
     role: msg.isUserMessage ? ("user" as const) : ("assistant" as const),
     content: msg.text,
@@ -88,11 +83,16 @@ export const POST = async (req: NextRequest) => {
       {
         role: "user",
         content: `Use the following pieces of context (or previous conversaton if needed) to answer the users question in markdown format. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
+  
+        
         
   \n----------------\n
   
+  
   PREVIOUS CONVERSATION:
-  ${formattedPrevMessages.map((message: FormattedMessage) => {
+  
+  // @ts-ignore
+  ${formattedPrevMessages.map((message) => {
     if (message.role === "user") return `User: ${message.content}\n`;
     return `Assistant: ${message.content}\n`;
   })}
@@ -116,9 +116,10 @@ export const POST = async (req: NextRequest) => {
           fileId,
           userId,
         },
-      });
+      })
     },
-  });
+  })
 
-  return new StreamingTextResponse(stream);
+  return new StreamingTextResponse(stream)
+
 };

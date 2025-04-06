@@ -9,7 +9,7 @@ const config: Config = {
   ],
   theme: {
   	container: {
-  		center: "true",
+  		center: true,
   		padding: '2rem',
   		screens: {
   			'2xl': '1400px'
@@ -18,6 +18,13 @@ const config: Config = {
   	extend: {
   		maxWidth: {
   			'8xl': '1408px'
+  		},
+  		backgroundSize: {
+  			'size-200': '200% 200%',
+  		},
+  		backgroundPosition: {
+  			'pos-0': '0% 0%',
+  			'pos-100': '100% 100%',
   		},
   		colors: {
   			border: 'hsl(var(--border))',
@@ -82,11 +89,22 @@ const config: Config = {
   				to: {
   					height: '0'
   				}
+  			},
+  			'twinkle': {
+  				'0%, 100%': {
+  					opacity: '0.2',
+  					transform: 'scale(1)'
+  				},
+  				'50%': {
+  					opacity: '0.7',
+  					transform: 'scale(1.2)'
+  				}
   			}
   		},
   		animation: {
   			'accordion-up': 'accordion-up 0.2s ease-out',
-  			'accordion-down': 'accordion-down 0.2s ease-out'
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'twinkle': 'twinkle 3s ease-in-out infinite'
   		}
   	}
   },

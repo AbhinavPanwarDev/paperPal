@@ -3,11 +3,23 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { trpc } from "../_trpc/client";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
 
 const Page = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const origin = searchParams.get("origin");
+
+  // Clear any potentially stale session data from local storage
+  useEffect(() => {
+    // Clear any cached auth data that might be causing problems
+    const localStorageKeys = Object.keys(localStorage);
+    localStorageKeys.forEach(key => {
+      if (key.includes('kinde') || key.includes('auth')) {
+        localStorage.removeItem(key);
+      }
+    });
+  }, []);
 
   trpc.authCallback.useQuery(undefined, {
     onSuccess: ({ success }) => {
@@ -18,70 +30,22 @@ const Page = () => {
     },
     onError: (err) => {
       if (err.data?.code === "UNAUTHORIZED") {
-        router.push("/sign-in");
+        router.push("/api/auth/login");
       }
     },
     retry: true,
     retryDelay: 500,
   });
 
-  //return JSX for user ex-
   return (
     <div className="w-full mt-24 flex justify-center">
       <div className="flex flex-col items-center gap-2">
-        <Loader2 className="h-8 w-8 animate-spin text-zinc-800" />
-        <h3 className="font-semibold text-xl">Setting up your account...</h3>
-        <p>Redirecting you automatically...</p>
+        <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
+        <h3 className="font-semibold text-xl text-white">Setting up your account...</h3>
+        <p className="text-indigo-300/70">Redirecting you automatically...</p>
       </div>
     </div>
   );
 };
 
 export default Page;
-
-// instead of using onSuccess and onError we can also write this code in the following Way
-
-// const Page = () => {
-//   const router = useRouter();
-//   const searchParams = useSearchParams();
-//   const origin = searchParams.get("origin");
-
-//   const handleSuccess = useCallback(
-//     (success: boolean) => {
-//       if (success) {
-//         router.push(origin ? `/${origin}` : '/dashboard');
-//       }
-//     },
-//     [router, origin]
-//   );
-
-//   const handleError = useCallback(
-//     (err: any) => {
-//       if (err.data?.code === "UNAUTHORIZED") {
-//         router.push("/sign-in");
-//       }
-//     },
-//     [router]
-//   );
-
-//   const query = trpc.authCallback.useQuery();
-
-//   useEffect(() => {
-//     if (query.data) {
-//       handleSuccess(query.data.success);
-//     }
-//     if (query.error) {
-//       handleError(query.error);
-//     }
-//   }, [query.data, query.error, handleSuccess, handleError]);
-
-//   if (query.isLoading) {
-//     return <div>Loading...</div>;
-//   }
-
-//   // You might want to add some JSX here to render after the query completes
-
-//   return null; // or return some JSX
-// };
-
-// export default Page;

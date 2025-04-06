@@ -19,6 +19,8 @@
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.2",
+    "@react-three/drei": "^10.0.6",
+    "@react-three/fiber": "^9.1.2",
     "@tailwindcss/typography": "^0.5.15",
     "@tanstack/react-query": "^4.35.3",
     "@trpc/client": "^10.45.2",
@@ -60,8 +62,12 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.4.11",
     "tailwindcss-animate": "^1.0.7",
+    "three": "^0.175.0",
     "typescript": "5.6.2",
     "uploadthing": "6.13.0",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/three": "^0.175.0"
   }
 }
