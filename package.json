@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel-build": "prisma generate && next build",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@kinde-oss/kinde-auth-nextjs": "^2.3.8",
@@ -69,5 +71,8 @@
   },
   "devDependencies": {
     "@types/three": "^0.175.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
