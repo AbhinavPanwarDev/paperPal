@@ -361,7 +361,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-4">Chat With Your Documents</h3>
                   <p className="text-indigo-100/70 leading-relaxed max-w-md mx-auto md:mx-0">
-                    Ask questions naturally and get instant, accurate answers based on your document's content.
+                    Ask questions naturally and get instant, accurate answers based on your document&apos;s content.
                   </p>
                 </div>
               </div>
