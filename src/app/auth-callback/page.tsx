@@ -3,9 +3,9 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { trpc } from "../_trpc/client";
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 
-const Page = () => {
+const AuthCallbackContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const origin = searchParams.get("origin");
@@ -45,6 +45,23 @@ const Page = () => {
         <p className="text-indigo-300/70">Redirecting you automatically...</p>
       </div>
     </div>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full mt-24 flex justify-center">
+          <div className="flex flex-col items-center gap-2">
+            <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
+            <h3 className="font-semibold text-xl text-white">Loading...</h3>
+          </div>
+        </div>
+      }
+    >
+      <AuthCallbackContent />
+    </Suspense>
   );
 };
 
