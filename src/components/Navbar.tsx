@@ -60,18 +60,19 @@ const Navbar = async () => {
                 <LoginLink
                   className={buttonVariants({
                     variant: 'ghost',
-                    size: 'sm',
-                    className: 'text-indigo-200 hover:text-white hover:bg-indigo-500/20'
+                    size: 'default',
+                    className: 'text-indigo-200 hover:text-white hover:bg-indigo-500/20 px-5 py-2.5 tracking-wide font-medium'
                   })}>
                   Sign in
                 </LoginLink>
                 <RegisterLink
-                  className={buttonVariants({
-                    size: 'sm',
-                    className: 'bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white shadow-lg shadow-indigo-500/20'
-                  })}>
-                  Get started{' '}
-                  <ArrowRight className='ml-1.5 h-5 w-5' />
+                  className="relative group overflow-hidden rounded-full px-6 py-3 text-white font-medium shadow-lg shadow-indigo-500/20 transition-all hover:shadow-indigo-500/40">
+                  <span className="relative z-10 flex items-center tracking-wide text-sm">
+                    Get started{' '}
+                    <ArrowRight className='ml-1.5 h-5 w-5 transition-transform group-hover:translate-x-1' />
+                  </span>
+                  <span className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-blue-500 group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-blue-600 transition-colors duration-300"></span>
+                  <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg"></span>
                 </RegisterLink>
               </>
             ) : (
@@ -80,8 +81,8 @@ const Navbar = async () => {
                   href='/dashboard'
                   className={buttonVariants({
                     variant: 'ghost',
-                    size: 'sm',
-                    className: 'text-indigo-200 hover:text-white hover:bg-indigo-500/20'
+                    size: 'default',
+                    className: 'text-indigo-200 hover:text-white hover:bg-indigo-500/20 px-5 py-2.5 tracking-wide font-medium'
                   })}>
                   Dashboard
                 </Link>
